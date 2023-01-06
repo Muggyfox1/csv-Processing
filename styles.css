@@ -1,0 +1,38 @@
+.loading-bar{
+    position: absolute;
+    width: 100%;
+    background: linear-gradient(138deg, darkgrey, grey);
+    padding: 0.5em;
+    margin: auto;
+    display: flex;
+}
+
+.loading-text{
+    color: white;
+    text-align: center;
+    width: 100%;
+}
+
+.hidden{
+    display: none;
+}
+
+.background{
+    margin: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(130deg, red, blue);
+}
+
+.flex{
+    display: flex;
+}
+
+main{
+    width: 100%;
+    flex-direction: column;
+}
+
