@@ -13,8 +13,7 @@ let enviroment = {
     _loading: false,
 }
 let inputs = {
-    CSVObject:[],
-    duration:1
+    CSVObject:[]
 }
 
 const fileSelector = document.getElementById('file-input');
@@ -29,11 +28,10 @@ fileSelector.addEventListener('change', (event) => {
 });
 
 const durationInput = document.getElementById('duration');
-durationInput.addEventListener('change', (event) => {
-    duration = event.target.value;
-});
 
 const loadingBar = document.getElementById('loading-bar');
+const generateButton = document.getElementById('generate-button');
+const previewList = document.getElementById("list");
 
 function processCSV(csvString){
     inputs.CSVObject = csvString.split("\r\n");
@@ -58,17 +56,23 @@ function processCSV(csvString){
 }
 
 function submit(){
+    enviroment.loading = true;
     shuffleList();
+    createListPreview();
     createNewFile();
-    console.log("submitted")
+    enviroment.loading = false;
 }
 
 function isLoading(){
     loadingBar.classList.remove("hidden");
+    generateButton.disabled = true;
 }
 
 function doneLoading(){
     loadingBar.classList.add("hidden");
+    if(inputs.CSVObject.length > 0){
+        generateButton.disabled = false;
+    }
 }
 
 function createNewFile(){
@@ -78,7 +82,7 @@ function createNewFile(){
 function shuffleList(){
     let newList = [];
     while(inputs.CSVObject.length > 0){
-        let index = getRandomInt(inputs.CSVObject.length - 1);
+        let index = getRandomInt(inputs.CSVObject.length);
         newList.push(inputs.CSVObject.splice(index ,1)[0]);
     }
     inputs.CSVObject = newList;
@@ -86,4 +90,30 @@ function shuffleList(){
 
 function getRandomInt(max) {
     return Math.floor(Math.random() * max);
+}
+
+function createListPreview(){
+    previewList.innerHTML = "";
+    let CSVObjRef = inputs.CSVObject.slice(0);
+
+    let dayCount = 0;
+    while(CSVObjRef.length > 0){
+        let familiesPerDay = Math.floor(CSVObjRef.length / (durationInput.value - dayCount));
+        console.log(familiesPerDay);
+
+        let day = document.createElement("li");
+        day.innerText = "Day";
+        dayCount++;
+        let familyListOfDay = document.createElement("ul");
+
+        for (let i = 0; i < familiesPerDay && CSVObjRef.length > 0 || 
+            dayCount == durationInput.value && CSVObjRef.length > 0; i++) {
+            let family = document.createElement("li");
+            let familyFromCSV = CSVObjRef.pop();
+            family.innerText = familyFromCSV.lastName;
+            familyListOfDay.append(family);
+        }
+        day.append(familyListOfDay);
+        previewList.append(day);
+    }
 }

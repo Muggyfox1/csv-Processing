@@ -19,12 +19,9 @@
 
 .background{
     margin: 0;
-    position: absolute;
-    top: 0;
-    left: 0;
     height: 100%;
     width: 100%;
-    background: linear-gradient(130deg, red, blue);
+    background: radial-gradient(white, lightgray);
 }
 
 .flex{
@@ -32,7 +29,12 @@
 }
 
 main{
-    width: 100%;
     flex-direction: column;
+    background: rgba(30%, 30%, 30%, 30%);
+    padding: 3em;
+    margin: 1.5em;
 }
 
+main section{
+    padding-bottom: 1em;
+}

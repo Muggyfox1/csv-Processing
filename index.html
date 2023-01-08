@@ -5,27 +5,28 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
-    <title>Document</title>
+    <title>CSV processor</title>
 </head>
-<body>
-    <div class="background">
-        <nav class="loading-bar hidden" id="loading-bar">
-            <span class="loading-text">Loading...</span>
-        </nav>
-        <main class="flex">
-            <section>
-                <label for="file-input">Choose file to upload</label>
-                <br><input type="file" name="file-input" id="file-input" accept=".csv">
-            </section>
-            <section>
-                <label for="duration">How many days should we split this list into?</label>
-                <br><input type="number" name="duration" id="duration" value = 1>
-            </section>
-            <section>
-                <input type="button" value="Generate" onclick="submit()">
-            </section>
-        </main>
-    </div>
+<body class="background">
+    <nav class="loading-bar hidden" id="loading-bar">
+        <span class="loading-text">Loading...</span>
+    </nav>
+    <main class="flex">
+        <section>
+            <label for="file-input">Choose CSV to upload</label>
+            <br><input type="file" name="file-input" id="file-input" accept=".csv">
+        </section>
+        <section>
+            <label for="duration">How many days should we split this list into?</label>
+            <br><input type="number" name="duration" id="duration" value = 1>
+        </section>
+        <section>
+            <input disabled type="button" value="Generate" id="generate-button" onclick="submit()">
+        </section>
+    </main>
+    <main>
+        <ol id="list"></ol>
+    </main>
 </body>
 <script src="main.js"></script>
 </html>
