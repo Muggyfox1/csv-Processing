@@ -14,7 +14,7 @@
     <main class="flex">
         <section>
             <label for="file-input">Choose CSV to upload</label>
-            <br><input type="file" name="file-input" id="file-input" accept=".csv">
+            <br><input type="file" name="file-input" id="file-input" accept=".csv" value="null">
         </section>
         <section>
             <label for="duration">How many days should we split this list into?</label>
@@ -23,9 +23,13 @@
         <section>
             <input disabled type="button" value="Generate" id="generate-button" onclick="submit()">
         </section>
+
+        <a class="hidden" href="" download id="download">
+            Download list
+        </a>
     </main>
     <main>
-        <ol id="list"></ol>
+        <ul id="list"></ul>
     </main>
 </body>
 <script src="main.js"></script>

@@ -38,3 +38,15 @@ main{
 main section{
     padding-bottom: 1em;
 }
+
+a{
+    width: fit-content;
+    padding: 0.5em;
+    background: white;
+    transition: background 0.5s, color 0.5s;
+}
+
+a:hover{
+    background: gray;
+    color: white;
+}

@@ -11,12 +11,14 @@ let enviroment = {
         return this._loading;
     },
     _loading: false,
+    downloadList:""
 }
 let inputs = {
     CSVObject:[]
 }
 
 const fileSelector = document.getElementById('file-input');
+fileSelector.value = null;
 fileSelector.addEventListener('change', (event) => {
     enviroment.loading = true
     const file = event.target.files[0];
@@ -46,13 +48,15 @@ function processCSV(csvString){
         otherPeople = otherPeople.filter(p => p.length > 0);
         
         let people = lineSplits[1].split("&")
-        .concat(otherPeople);
+        .concat(otherPeople).map(person => person.trim());
 
         let family = {lastName: lineSplits[0], people: people};
         return family;
     })
     .filter(f => f != undefined)
     .slice(1);
+    
+    localStorage.setItem("list", inputs.CSVObject);
 }
 
 function submit(){
@@ -76,7 +80,38 @@ function doneLoading(){
 }
 
 function createNewFile(){
-    console.log("creating new file")
+    let CSVObjRef = inputs.CSVObject.slice(0);
+    let textArray = [];
+    let dayCount = 0;
+    let today = new Date();
+    while(CSVObjRef.length > 0){
+        let familiesPerDay = Math.floor(CSVObjRef.length / (durationInput.value - dayCount));
+
+        dayText = "Day: " + (dayCount + 1) + ", "
+        + (today.getMonth() + 1) + "/" + today.getDate();
+        textArray.push(dayText);
+
+        dayCount++;
+        today.setDate(today.getDate() + 1)
+
+        for (let i = 0; i < familiesPerDay && CSVObjRef.length > 0 || 
+            dayCount == durationInput.value && CSVObjRef.length > 0; i++) {
+            
+            let familyFromCSV = CSVObjRef.pop();
+            textArray.push("    " + familyFromCSV.lastName + ":");
+            
+            familyFromCSV.people.forEach(personName => {
+                textArray.push("        " + personName.trim());
+            });
+
+            textArray.push("")
+        }
+    }
+
+    enviroment.downloadList = textArray.join("\n");
+    localStorage.setItem("listForDownload", enviroment.downloadList);
+
+    createDownloadLink("List.txt", enviroment.downloadList)
 }
 
 function shuffleList(){
@@ -97,13 +132,17 @@ function createListPreview(){
     let CSVObjRef = inputs.CSVObject.slice(0);
 
     let dayCount = 0;
+    let today = new Date();
     while(CSVObjRef.length > 0){
         let familiesPerDay = Math.floor(CSVObjRef.length / (durationInput.value - dayCount));
-        console.log(familiesPerDay);
 
         let day = document.createElement("li");
-        day.innerText = "Day";
+        day.innerText = "Day: " + (dayCount + 1) + ", "
+        + (today.getMonth() + 1) + "/" + today.getDate();
+        
         dayCount++;
+        today.setDate(today.getDate() + 1)
+
         let familyListOfDay = document.createElement("ul");
 
         for (let i = 0; i < familiesPerDay && CSVObjRef.length > 0 || 
@@ -111,9 +150,45 @@ function createListPreview(){
             let family = document.createElement("li");
             let familyFromCSV = CSVObjRef.pop();
             family.innerText = familyFromCSV.lastName;
+            
+            let peopleInFamily = document.createElement("ul");
+            familyFromCSV.people.forEach(personName => {
+                let person = document.createElement("li");
+                person.innerText = personName.trim();
+                peopleInFamily.append(person);
+            });
+
+            family.append(peopleInFamily);
             familyListOfDay.append(family);
+
         }
         day.append(familyListOfDay);
         previewList.append(day);
     }
+
+    localStorage.setItem("previewList", previewList.innerHTML);
 }
+
+function loadLocalStorage(){
+    enviroment.loading = true;
+    let previewListInnerHTML = localStorage.getItem("previewList"); 
+    if(previewListInnerHTML){
+        previewList.innerHTML = previewListInnerHTML;
+    }
+
+    let listForDownload = localStorage.getItem("listForDownload"); 
+    if(listForDownload){
+        enviroment.downloadList = listForDownload;
+        createDownloadLink("List.txt", listForDownload)
+        console.log(listForDownload);
+    }
+    enviroment.loading = false;
+}
+loadLocalStorage();
+
+function createDownloadLink(filename, text) {
+    var element = document.getElementById('download');
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+    element.setAttribute('download', filename);
+    element.classList.remove("hidden");
+  }
