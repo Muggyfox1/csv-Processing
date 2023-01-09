@@ -169,6 +169,14 @@ function createListPreview(){
     localStorage.setItem("previewList", previewList.innerHTML);
 }
 
+
+function createDownloadLink(filename, text) {
+    var element = document.getElementById('download');
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+    element.setAttribute('download', filename);
+    element.classList.remove("hidden");
+}
+
 function loadLocalStorage(){
     enviroment.loading = true;
     let previewListInnerHTML = localStorage.getItem("previewList"); 
@@ -180,15 +188,7 @@ function loadLocalStorage(){
     if(listForDownload){
         enviroment.downloadList = listForDownload;
         createDownloadLink("List.txt", listForDownload)
-        console.log(listForDownload);
     }
     enviroment.loading = false;
 }
 loadLocalStorage();
-
-function createDownloadLink(filename, text) {
-    var element = document.getElementById('download');
-    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
-    element.setAttribute('download', filename);
-    element.classList.remove("hidden");
-  }
