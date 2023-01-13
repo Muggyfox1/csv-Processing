@@ -127,6 +127,8 @@ function shuffleList(){
 }
 
 function getRandomInt(max) {
+    let a = Math.random();
+    a;
     return Math.floor(Math.random() * max);
 }
 
