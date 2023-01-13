@@ -8,10 +8,10 @@
     <title>CSV processor</title>
 </head>
 <body class="background">
-    <nav class="loading-bar hidden" id="loading-bar">
+    <nav class="loading-bar hidden no-print" id="loading-bar">
         <span class="loading-text">Loading...</span>
     </nav>
-    <main class="flex">
+    <main class="flex no-print">
         <p>
             NOTE: use a semi-colon (;) as the field separator/delimiter for the CSV.
         </p>
@@ -35,7 +35,7 @@
         </a>
     </main>
     <main>
-        <ul id="list"></ul>
+        <div id="list" class="flex"></div>
     </main>
 </body>
 <script src="main.js"></script>

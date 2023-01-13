@@ -50,3 +50,21 @@ a:hover{
     background: gray;
     color: white;
 }
+
+#list{
+    gap: 1em;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
+#list div{
+    padding: 1em;
+    border: solid 1px gray;
+    width: 20%;
+}
+
+@media print{
+    .no-print{
+        display: none;
+    }
+}
